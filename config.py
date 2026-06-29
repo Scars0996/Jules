@@ -32,10 +32,10 @@ def get_theme_colors(theme_name):
         "High Contrast": {
             "bg": "#000000",
             "fg": "#FFFFFF",
-            "button_bg": "#333333",
+            "button_bg": "#444444",
             "button_fg": "#FFFFFF",
             "accent": "#FFFF00",
-            "font_family": "Arial"
+            "font_family": "Arial Black"
         },
         "Large Text Light": {
             "bg": "#FFFFFF",
