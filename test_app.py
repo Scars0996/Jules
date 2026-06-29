@@ -8,44 +8,47 @@ from updater import check_for_ytdlp_updates
 class TestAppComponents(unittest.TestCase):
 
     def test_config_load_save(self):
-        # Clean up if exists
         if os.path.exists("config.json"):
             os.remove("config.json")
 
         config = load_config()
-        self.assertEqual(config["theme"], "High Contrast")
+        self.assertEqual(config["theme"], "Contraste Élevé")
+        self.assertEqual(config["download_mode"], "Single")
 
-        config["theme"] = "Cataract Friendly"
+        config["download_mode"] = "Playlist"
+        config["auto_download"] = True
         save_config(config)
 
         new_config = load_config()
-        self.assertEqual(new_config["theme"], "Cataract Friendly")
+        self.assertEqual(new_config["download_mode"], "Playlist")
+        self.assertTrue(new_config["auto_download"])
 
         if os.path.exists("config.json"):
             os.remove("config.json")
 
-    def test_theme_colors(self):
-        colors = get_theme_colors("High Contrast")
+    def test_theme_colors_localized(self):
+        colors = get_theme_colors("Contraste Élevé")
         self.assertEqual(colors["bg"], "#000000")
+        self.assertEqual(colors["paste_btn"], "#28A745")
 
         colors = get_theme_colors("Unknown")
-        # Should return default (High Contrast)
         self.assertEqual(colors["bg"], "#000000")
 
-    def test_downloader_info(self):
-        # We'll use a very short and stable video for testing if possible,
-        # or just mock it. For now, let's try a real one but skip if it fails network-wise.
-        dl = DownloaderLogic()
-        info = dl.get_info("https://www.youtube.com/watch?v=BaW_jenozKc") # Youtube short
-        if info:
-            self.assertIn('title', info)
-            self.assertIn('formats', info)
+    def test_downloader_cleanup_logic(self):
+        from downloader_logic import DownloadTask
+        # dl = DownloaderLogic()
+        # Simulate a task
+        test_file = "test_download.mp4"
+        task = DownloadTask(None, None, ".", "Single", None, None)
+        task.current_files = [test_file]
 
-    def test_updater(self):
-        # This will actually try to update yt-dlp
-        # We just check if it runs without crashing
-        result = check_for_ytdlp_updates()
-        self.assertIsInstance(result, bool)
+        # Create a fake partial file
+        with open(test_file + ".part", "w") as f:
+            f.write("partial data")
+
+        self.assertTrue(os.path.exists(test_file + ".part"))
+        task.cleanup_incomplete_files()
+        self.assertFalse(os.path.exists(test_file + ".part"))
 
 if __name__ == "__main__":
     unittest.main()

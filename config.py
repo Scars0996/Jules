@@ -5,9 +5,13 @@ from pathlib import Path
 DEFAULT_CONFIG = {
     "download_path": str(Path.home() / "Downloads"),
     "converter_path": str(Path.home() / "Downloads" / "Converted"),
-    "theme": "High Contrast",
+    "theme": "Contraste Élevé",
     "font_scale": 2.0,
-    "auto_update_ytdlp": True
+    "auto_update_ytdlp": True,
+    "download_mode": "Single", # Single or Playlist
+    "auto_download": False,
+    "saved_quality": "best",
+    "saved_format": "mp4"
 }
 
 CONFIG_FILE = "config.json"
@@ -29,29 +33,38 @@ def save_config(config):
 
 def get_theme_colors(theme_name):
     themes = {
-        "High Contrast": {
+        "Contraste Élevé": {
             "bg": "#000000",
             "fg": "#FFFFFF",
             "button_bg": "#444444",
             "button_fg": "#FFFFFF",
             "accent": "#FFFF00",
-            "font_family": "Arial Black"
+            "font_family": "Arial Black",
+            "paste_btn": "#28A745",
+            "delete_btn": "#DC3545",
+            "download_btn": "#6F42C1"
         },
-        "Large Text Light": {
+        "Texte Large Clair": {
             "bg": "#FFFFFF",
             "fg": "#000000",
             "button_bg": "#E0E0E0",
             "button_fg": "#000000",
             "accent": "#0000FF",
-            "font_family": "Verdana"
+            "font_family": "Verdana",
+            "paste_btn": "#28A745",
+            "delete_btn": "#DC3545",
+            "download_btn": "#6F42C1"
         },
-         "Cataract Friendly": {
+         "Spécial Cataracte": {
             "bg": "#FFFFE0", # Light Yellow background often better for some cataracts
             "fg": "#000000",
             "button_bg": "#C0C0C0",
             "button_fg": "#000000",
             "accent": "#800000",
-            "font_family": "Arial"
+            "font_family": "Arial",
+            "paste_btn": "#28A745",
+            "delete_btn": "#DC3545",
+            "download_btn": "#6F42C1"
         }
     }
-    return themes.get(theme_name, themes["High Contrast"])
+    return themes.get(theme_name, themes["Contraste Élevé"])
